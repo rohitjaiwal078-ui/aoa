@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOA Practical Lab - 10 Experiments</title>
+<style>
+:root{--bg:#090e1b;--panel:#121a2d;--panel2:#17233b;--text:#edf3ff;--muted:#9aa9c8;--accent:#62a5ff;--border:#293754;--code:#060a12}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(135deg,#070b15,#101a30 55%,#080d19);color:var(--text);font-family:Segoe UI,Arial,sans-serif}
+header{position:sticky;top:0;z-index:10;background:rgba(7,11,21,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav{max-width:1200px;margin:auto;padding:14px 20px;display:flex;gap:18px;align-items:center}.logo{font-weight:800;white-space:nowrap}.logo span{color:var(--accent)}
+.search{flex:1}.search input{width:100%;padding:12px 15px;border-radius:12px;border:1px solid var(--border);background:#0c1425;color:white;outline:none}
+main{max-width:1200px;margin:auto;padding:35px 20px 70px}.hero{padding:25px 0 35px}.badge,.tag,.pill{display:inline-block;border-radius:999px;background:#172642;color:#a9cbff;padding:6px 10px;font-size:12px}
+h1{font-size:clamp(34px,6vw,58px);line-height:1.04;margin:18px 0 12px}.hero p{max-width:760px;color:var(--muted);line-height:1.65;font-size:17px}
+.stats{display:flex;flex-wrap:wrap;gap:12px}.stat{background:var(--panel);border:1px solid var(--border);padding:12px 16px;border-radius:12px}.stat b{display:block;font-size:20px}.stat small{color:var(--muted)}
+h2{margin:0 0 8px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}.card{padding:19px;border:1px solid var(--border);background:linear-gradient(145deg,var(--panel),#0f1729);border-radius:16px;cursor:pointer;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#4a70ad}.num{font-size:12px;color:var(--accent);font-weight:700}.card h3{margin:8px 0}.card p{color:var(--muted);font-size:14px;line-height:1.5}.section{margin-top:40px}
+.exp{margin:18px 0;border:1px solid var(--border);border-radius:17px;overflow:hidden;background:rgba(18,26,45,.94)}.exphead{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;align-items:center}.exphead h2{font-size:20px;margin:0}.content{padding:20px}.note{padding:12px 14px;background:#111b30;border-left:3px solid var(--accent);border-radius:8px;color:var(--muted);line-height:1.5;margin-bottom:15px}
+.codewrap{position:relative}pre{margin:0;padding:18px;background:var(--code);border:1px solid #202d47;border-radius:12px;overflow:auto;white-space:pre;line-height:1.5;font:13px Consolas,Monaco,monospace;color:#dce7ff}.copy{position:absolute;right:10px;top:10px;padding:7px 10px;border:1px solid #344563;background:#17233c;color:white;border-radius:8px;cursor:pointer}.output{margin-top:18px}.output pre{background:#07130d;border-color:#244832;color:#bdf5cb}
+.top{position:fixed;right:20px;bottom:20px;border:1px solid var(--border);background:#17233b;color:white;width:42px;height:42px;border-radius:50%;cursor:pointer}
+footer{text-align:center;border-top:1px solid var(--border);padding:25px;color:#71809d}
+@media(max-width:700px){.nav{flex-wrap:wrap}.search{flex-basis:100%}.exphead{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="logo">AOA <span>Practical Lab</span></div><div class="search"><input id="search" placeholder="Search experiment, algorithm, keyword..."></div></div></header>
+<main>
+<section class="hero">
+<span class="badge">100% OFFLINE • AOA PRACTICALS</span>
+<h1>Analysis of Algorithms<br>Practical Notebook</h1>
+<p>All 10 practical programs in one portable website. Open this file directly in Chrome. No internet, hosting, database or installation is required.</p>
+<div class="stats"><div class="stat"><b>10</b><small>Experiments</small></div><div class="stat"><b>C</b><small>Programming</small></div><div class="stat"><b>Offline</b><small>Works without internet</small></div><div class="stat"><b>Copy</b><small>Code buttons</small></div></div>
+</section>
+
+<section class="section"><h2>Experiments</h2><p class="muted">Click a card to open its program.</p><div class="grid" id="cards"></div></section>
+<section class="section" id="programs"></section>
+</main>
+<button class="top" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<footer>AOA Practical Lab • 10 Experiments • Offline Revision Website</footer>
+
+<script>
+const P=[
+{n:1,t:"Insertion Sort – Case Analysis",tag:"Sorting / Case Analysis",d:"Insertion sort with shift counting and percentage-based case classification.",c:`#include <stdio.h>
+int A[100], i, j, item, n;
+int shift = 0;
+float pshift;
+int t;
+int main()
+{
+    printf("\n How many numbers: ?");
+    scanf("%d", &n);
+    printf("\n Enter Elements:");
+    for (i = 0; i < n; i++) scanf("%d", &A[i]);
+    for (j = 1; j < n; j++)
+    {
+        item = A[j]; i = j - 1;
+        while ((i >= 0) && (item > A[i]))
+        {
+            A[i + 1] = A[i]; i = i - 1; shift++;
+        }
+        A[i + 1] = item;
+    }
+    printf("\n Array elements after sort:");
+    for (i = 0; i < n; i++) printf("%d\t", A[i]);
+    printf("\n Total shifts: %d\n", shift);
+    t = n * (n - 1) / 2;
+    pshift = (float)(shift * 100.0) / t;
+    if (pshift < 33.0) printf("Best case:");
+    else if (pshift < 66.0) printf("Average case:");
+    else printf("Worst case:");
+    printf(" Percentage shift is %f\n", pshift);
+    return 0;
+}`,o:`Input:
+5
+5 4 3 2 1
+
+Output:
+Array elements after sort: 5 4 3 2 1
+Total shifts: 0
+Best case: Percentage shift is 0.000000`},
+{n:2,t:"Quick Sort",tag:"Sorting / Divide & Conquer",d:"Quick sort using partitioning and recursion.",c:`#include <stdio.h>
+int partition(int A[], int low, int high)
+{
+    int pivot=A[low], i=low+1, j=high, temp;
+    while(1)
+    {
+        while(i<=high && A[i]<=pivot) i++;
+        while(A[j]>pivot) j--;
+        if(i<j){temp=A[i];A[i]=A[j];A[j]=temp;}
+        else break;
+    }
+    temp=A[low]; A[low]=A[j]; A[j]=temp;
+    return j;
+}
+void quickSort(int A[], int low, int high)
+{
+    if(low<high)
+    {
+        int p=partition(A,low,high);
+        quickSort(A,low,p-1);
+        quickSort(A,p+1,high);
+    }
+}
+int main()
+{
+    int n,i;
+    printf("Enter the number of elements: "); scanf("%d",&n);
+    int A[n];
+    printf("Enter %d elements:\n",n);
+    for(i=0;i<n;i++) scanf("%d",&A[i]);
+    quickSort(A,0,n-1);
+    printf("\n Sorted Array: ");
+    for(i=0;i<n;i++) printf("%d ",A[i]);
+    return 0;
+}`,o:`Input:
+5
+5 2 8 1 4
+
+Output:
+Sorted Array: 1 2 4 5 8`},
+{n:3,t:"Fractional Knapsack – Greedy Method",tag:"Greedy",d:"Sorts items by profit/weight ratio and allows a fraction of the final item.",c:`#include <stdio.h>
+struct obj{int p;int w;int id;float ratio;float selected;};
+int main()
+{
+    struct obj item[10],temp;
+    int M,n,i,j,rem; float maxp=0.0,flag[10]={0},frac;
+    printf("Enter the capacity of knapsack: "); scanf("%d",&M);
+    printf("Enter the number of items: "); scanf("%d",&n);
+    if(n>10){printf("Maximum number of items is 10.\n");return 1;}
+    for(i=0;i<n;i++)
+    {
+        printf("\nEnter profit and weight of item %c: ",i+65);
+        scanf("%d %d",&item[i].p,&item[i].w);
+        item[i].id=65+i; item[i].selected=0.0;
+        if(item[i].w<=0){printf("Weight must be greater than 0.\n");return 1;}
+        item[i].ratio=(float)item[i].p/item[i].w;
+    }
+    for(i=0;i<n-1;i++) for(j=0;j<n-1;j++)
+        if(item[j].ratio<item[j+1].ratio){temp=item[j];item[j]=item[j+1];item[j+1]=temp;}
+    rem=M;i=0;
+    while(rem>0&&i<n)
+    {
+        if(item[i].w<=rem){maxp+=item[i].p;rem-=item[i].w;flag[i]=1;}
+        else{maxp+=((float)item[i].p*rem)/item[i].w;frac=(float)(rem*100)/item[i].w;flag[i]=frac;rem=0;}
+        i++;
+    }
+    printf("\n >>>> Max Profit Obtained: %.3f\n",maxp);
+    printf("\n >>>> Item Picked: ");
+    for(i=0;i<n;i++){if(flag[i]==1)printf("%c ",item[i].id);else if(flag[i]>1)printf("%c (%.2f%%) ",item[i].id,flag[i]);}
+    return 0;
+}`,o:`Capacity: 50
+Items:
+A = profit 60, weight 10
+B = profit 100, weight 20
+C = profit 120, weight 30
+
+Max Profit Obtained: 260.000
+Item Picked: A B C (66.67%)`},
+{n:4,t:"Minimum Spanning Tree using Prim’s Algorithm",tag:"Greedy / Graph",d:"Builds an MST by repeatedly selecting the minimum edge from visited to unvisited vertices.",c:`#include <stdio.h>
+#define MAX 10
+int main()
+{
+    int a[MAX][MAX],visited[MAX],min;
+    int u=0,v=0,total=0,n,i,j,count;
+    printf("\n Enter Number of Vertices: "); scanf("%d",&n);
+    printf("\n Enter the Adjacent Matrix:\n");
+    for(i=0;i<n;i++)
+    {
+        visited[i]=0;
+        for(j=0;j<n;j++)
+        {
+            scanf("%d",&a[i][j]);
+            if(a[i][j]==0) a[i][j]=999;
+        }
+    }
+    visited[0]=1;
+    for(count=0;count<n-1;count++)
+    {
+        min=999;
+        for(i=0;i<n;i++) if(visited[i]==1)
+            for(j=0;j<n;j++)
+                if(visited[j]!=1&&min>a[i][j]){min=a[i][j];u=i;v=j;}
+        visited[v]=1; total+=min;
+        printf("\n Minimum edge found at %d -> %d with weight %d",u,v,min);
+    }
+    printf("\n Weight of Minimum Spanning Tree is %d\n",total);
+    return 0;
+}`,o:`Input graph:
+0 10 6 5
+10 0 15 0
+6 15 0 4
+5 0 4 0
+
+Output:
+Minimum edge found at 0 -> 3 with weight 5
+Minimum edge found at 3 -> 2 with weight 4
+Minimum edge found at 0 -> 1 with weight 10
+Weight of Minimum Spanning Tree is 19`},
+{n:5,t:"Implementation of BFS Algorithm",tag:"Graph / Traversal",d:"Breadth-first traversal using an adjacency matrix, queue and visited array.",c:`#include <stdio.h>
+#define Max 20
+int adj[Max][Max],visited[Max],q[Max],n;
+void bfs(int start)
+{
+    int front=0,rear=0,i,v;
+    for(i=0;i<n;i++) visited[i]=0;
+    q[rear++]=start; visited[start]=1;
+    printf("BFS traversal: ");
+    while(front<rear)
+    {
+        v=q[front++]; printf("%d ",v);
+        for(i=0;i<n;i++)
+            if(adj[v][i]==1&&visited[i]==0){q[rear++]=i;visited[i]=1;}
+    }
+    printf("\n");
+}
+int main()
+{
+    int i,j,start,edges,u,v;
+    printf("Enter number of vertices (max %d): ",Max); scanf("%d",&n);
+    for(i=0;i<n;i++) for(j=0;j<n;j++) adj[i][j]=0;
+    printf("Enter number of edges: "); scanf("%d",&edges);
+    printf("Enter each edge as two vertex numbers (0-based):\n");
+    for(i=0;i<edges;i++){scanf("%d %d",&u,&v);adj[u][v]=1;adj[v][u]=1;}
+    printf("Enter starting vertex for BFS: "); scanf("%d",&start);
+    bfs(start); return 0;
+}`,o:`Vertices: 5
+Edges: 0-1, 0-2, 1-3, 2-4
+Start: 0
+
+BFS traversal: 0 1 2 3 4`},
+{n:6,t:"0/1 Knapsack using Dynamic Programming",tag:"Dynamic Programming",d:"Builds a DP table and backtracks to find the optimal set of items.",c:`#include <stdio.h>
+int sum=0;
+int max(int a,int b){if(a>b)return a;else return b;}
+int main()
+{
+    int w[10],p[10],m,n,v[100][200]={0},x[10]={0},i,j;
+    printf("Enter number of items\n"); scanf("%d",&n);
+    printf("Enter knapsack capacity\n"); scanf("%d",&m);
+    printf("\nEnter weight and profit of each item:\n");
+    for(i=0;i<n;i++)
+    {
+        printf("Item %d weight: ",i+1); scanf("%d",&w[i]);
+        printf("Item %d profit: ",i+1); scanf("%d",&p[i]);
+    }
+    for(i=0;i<=n;i++) for(j=0;j<=m;j++)
+    {
+        if(i==0||j==0)v[i][j]=0;
+        else if(j<w[i-1])v[i][j]=v[i-1][j];
+        else v[i][j]=max(v[i-1][j],v[i-1][j-w[i-1]]+p[i-1]);
+    }
+    i=n;j=m;
+    while(i>0&&j>0){if(v[i][j]!=v[i-1][j]){x[i-1]=1;j-=w[i-1];}i--;}
+    printf("\n Optimal set of items is:\n");
+    for(i=0;i<n;i++){if(x[i]==1){printf("x%d = 1\t",i+1);sum+=p[i];}else printf("x%d = 0\t",i+1);}
+    printf("\n Total profit = %d\n",sum);
+    return 0;
+}`,o:`Items:
+1: weight 2, profit 12
+2: weight 1, profit 10
+3: weight 3, profit 20
+Capacity: 5
+
+Optimal set: x1 = 1, x2 = 1, x3 = 0
+Total profit = 22`},
+{n:7,t:"Floyd-Warshall Algorithm",tag:"Dynamic Programming / Shortest Path",d:"Computes all-pairs shortest paths and prints shortest paths using an intermediate table.",c:`#include <stdio.h>
+#define MAX 20
+#define INF 999
+void printMatrix(int dist[MAX][MAX],int n,int k)
+{
+    int i,j; printf("\n D %d Matrix:\n",k);
+    for(i=0;i<n;i++){for(j=0;j<n;j++){if(dist[i][j]==INF)printf("999\t");else printf("%d\t",dist[i][j]);}printf("\n");}
+}
+void path(int p[MAX][MAX],int q,int r)
+{
+    if(p[q][r]!=0){path(p,q,p[q][r]);printf("v%d -> ",p[q][r]+1);path(p,p[q][r],r);}
+}
+int main()
+{
+    int graph[MAX][MAX],dist[MAX][MAX],p[MAX][MAX],n,i,j,k,q,r;
+    printf("Enter number of vertices: ");scanf("%d",&n);
+    printf("Enter 999 for INF (no direct edge):\n\n");
+    for(i=0;i<n;i++)for(j=0;j<n;j++){scanf("%d",&graph[i][j]);dist[i][j]=graph[i][j];p[i][j]=0;}
+    printMatrix(dist,n,0);
+    for(k=0;k<n;k++)
+    {
+        for(i=0;i<n;i++)for(j=0;j<n;j++)
+            if(dist[i][k]!=INF&&dist[k][j]!=INF&&dist[i][k]+dist[k][j]<dist[i][j])
+            {dist[i][j]=dist[i][k]+dist[k][j];p[i][j]=k;}
+        printMatrix(dist,n,k+1);
+    }
+    printf("Shortest Paths:\n");
+    for(q=0;q<n;q++)for(r=0;r<n;r++)if(q!=r&&dist[q][r]!=INF)
+    {printf("\n Path from v%d to v%d: ",q+1,r+1);printf("v%d -> ",q+1);path(p,q,r);printf("v%d",r+1);printf("\n Distance = %d\n",dist[q][r]);}
+    return 0;
+}`,o:`For graph:
+0 4 11
+999 0 2
+999 999 0
+
+Shortest path from v1 to v3:
+v1 -> v2 -> v3
+Distance = 6`},
+{n:8,t:"Longest Common Subsequence (LCS)",tag:"Dynamic Programming",d:"Builds the LCS table with arrows and backtracks to print the common subsequence and its length.",c:`#include <stdio.h>
+#include <string.h>
+int main()
+{
+    char a[20],b[20],same[20];
+    int i,j,k=0,count=0;
+    printf("Enter A String : "); gets(a);
+    printf("Enter B String : "); gets(b);
+    int ch[strlen(a)+1][strlen(b)+1];
+    char arrow[strlen(a)+1][strlen(b)+1];
+    for(i=0;i<=strlen(a);i++){ch[i][0]=0;arrow[i][0]=' ';}
+    printf("\t\t");
+    for(i=0;i<=strlen(b);i++){ch[0][i]=0;arrow[0][i]=' ';printf("%c\t",b[i]);}
+    printf("\n\n");
+    for(i=1;i<=strlen(a);i++)for(j=1;j<=strlen(b);j++)
+    {
+        if(a[i-1]==b[j-1]){ch[i][j]=ch[i-1][j-1]+1;arrow[i][j]='d';}
+        else if(ch[i][j-1]<=ch[i-1][j]){ch[i][j]=ch[i-1][j];arrow[i][j]='|';}
+        else{ch[i][j]=ch[i][j-1];arrow[i][j]='-';}
+    }
+    for(i=0;i<=strlen(a);i++)
+    {
+        if(i!=0)printf("%c\t",a[i-1]);else printf("\t");
+        for(j=0;j<=strlen(b);j++)printf("%d %c\t",ch[i][j],arrow[i][j]);
+        printf("\n");
+    }
+    for(i=strlen(a);i>=1;i--)for(j=strlen(b);j>=1;j--)
+    {
+        if(arrow[i][j]=='d'){same[k++]=a[i-1];i--;}
+        else if(arrow[i][j]=='-'){}
+        else if(arrow[i][j]=='|'){i--;j++;}
+    }
+    printf("\nThe Character which are same are : ");
+    for(i=k-1;i>=0;i--)printf("%c",same[i]);
+    printf("\nThe length of LCS : %d\n",ch[strlen(a)][strlen(b)]);
+}`,o:`A String: ABCBDAB
+B String: BDCABA
+
+The Character which are same are : BCBA
+The length of LCS : 4`},
+{n:9,t:"N-Queens Problem",tag:"Backtracking",d:"Places queens row-by-row while checking column and diagonal conflicts.",c:`#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+int board[20],count,z;
+int main()
+{
+    int n,i,j; int queen(int row,int n);
+    printf("\n\nEnter number of Queens:");scanf("%d",&n);
+    printf("\nNumber of solution required (1-90):");scanf("%d",&z);
+    queen(1,n); return 0;
+}
+void print(int n)
+{
+    int i,j; printf("\n\nSolution %d:\n\n",++count);
+    for(i=1;i<=n;++i)printf("\t%d",i);
+    for(i=1;i<=n;++i)
+    {
+        printf("\n\n%d",i);
+        for(j=1;j<=n;++j)if(board[i]==j)printf("\tQ");else printf("\t.");
+    }
+}
+int place(int row,int column)
+{
+    int i;
+    for(i=1;i<=row-1;++i)
+    {
+        if(board[i]==column)return 0;
+        else if(abs(board[i]-column)==abs(i-row))return 0;
+    }
+    return 1;
+}
+int queen(int row,int n)
+{
+    if(count==z)return 0;
+    else
+    {
+        int column;
+        for(column=1;column<=n;++column)
+        {
+            if(place(row,column))
+            {
+                board[row]=column;
+                if(row==n)print(n);else queen(row+1,n);
+            }
+        }
+    }
+}`,o:`Input:
+Number of Queens: 4
+Number of solutions required: 1
+
+Output:
+Solution 1
+. Q . .
+. . . Q
+Q . . .
+. . Q .`},
+{n:10,t:"Naive String Matching",tag:"String Matching",d:"Checks the pattern at every possible position in the main text and reports matching indices.",c:`#include <stdio.h>
+#include <string.h>
+void naiveStringMatch(char text[],char pattern[])
+{
+    int n=(int)strlen(text),m=(int)strlen(pattern),i,j,found=0;
+    if(m>n||m==0){printf("Pattern not found\n");return;}
+    for(i=0;i<=n-m;i++)
+    {
+        for(j=0;j<m;j++){if(text[i+j]!=pattern[j])break;}
+        if(j==m){printf("Pattern found at index %d\n",i);found=1;}
+    }
+    if(found==0)printf("Pattern not found\n");
+}
+int main()
+{
+    char text[1000],pattern[100];
+    printf("Enter the main text: ");fgets(text,sizeof(text),stdin);
+    text[strcspn(text,"\n")]='\0';
+    printf("Enter the pattern to search: ");fgets(pattern,sizeof(pattern),stdin);
+    pattern[strcspn(pattern,"\n")]='\0';
+    printf("\n--- Search Results ---\n");
+    naiveStringMatch(text,pattern);
+    return 0;
+}`,o:`Main text: AABAACAADAABAABA
+Pattern: AABA
+
+--- Search Results ---
+Pattern found at index 0
+Pattern found at index 9
+Pattern found at index 12`}
+];
+
+const cards=document.getElementById("cards"), programs=document.getElementById("programs");
+function render(list){
+ cards.innerHTML=list.map(p=>`<div class="card" onclick="document.getElementById('e${p.n}').scrollIntoView({behavior:'smooth'})"><div class="num">EXPERIMENT ${String(p.n).padStart(2,"0")}</div><h3>${p.t}</h3><p>${p.d}</p><span class="tag">${p.tag}</span></div>`).join("");
+ programs.innerHTML=list.map(p=>`<article class="exp" id="e${p.n}"><div class="exphead"><h2>Experiment ${p.n}: ${p.t}</h2><span class="pill">${p.tag}</span></div><div class="content"><div class="note">${p.d}</div><b>Program Code</b><div class="codewrap"><button class="copy" onclick="copyCode(${p.n},this)">Copy Code</button><pre id="c${p.n}"></pre></div><div class="output"><b>Sample Output</b><pre>${p.o}</pre></div></div></article>`).join("");
+ list.forEach(p=>document.getElementById("c"+p.n).textContent=p.c);
+}
+function copyCode(n,b){
+ navigator.clipboard.writeText(P.find(x=>x.n===n).c).then(()=>{b.textContent="Copied ✓";setTimeout(()=>b.textContent="Copy Code",1000)})
+ .catch(()=>{b.textContent="Select & Copy";});
+}
+document.getElementById("search").addEventListener("input",e=>{
+ const q=e.target.value.toLowerCase();
+ render(P.filter(p=>(p.t+" "+p.tag+" "+p.d+" "+p.c).toLowerCase().includes(q)));
+});
+render(P);
+</script>
+</body>
+</html>
